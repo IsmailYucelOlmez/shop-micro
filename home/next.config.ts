@@ -4,6 +4,14 @@ const nextConfig: NextConfig = {
   transpilePackages: ['shared'],
   experimental: {
     esmExternals: 'loose'
+  },
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'fakestoreapi.com',
+      },
+    ],
   }
 };
 
