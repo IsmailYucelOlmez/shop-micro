@@ -1,0 +1,51 @@
+# Build stage
+FROM node:20-alpine AS builder
+
+# Çalışma dizini
+WORKDIR /app
+
+# Shared paketini kopyala ve build et
+COPY shared ./shared
+WORKDIR /app/shared
+RUN npm install
+RUN npm run build
+
+# Ana uygulamaya geç
+WORKDIR /app/card
+COPY card/package*.json ./
+RUN npm install
+
+# Kodları kopyala
+COPY card/ ./
+
+# Build al
+RUN npm run build
+
+# Production stage
+FROM node:20-alpine AS runner
+
+WORKDIR /app
+
+# Production dependencies
+COPY card/package*.json ./
+RUN npm ci --only=production && npm cache clean --force
+
+# Shared paketini kopyala
+COPY --from=builder /app/shared ./shared
+
+# Build edilmiş uygulamayı kopyala
+COPY --from=builder /app/card/.next ./.next
+COPY --from=builder /app/card/public ./public
+
+# User oluştur
+RUN addgroup --system --gid 1001 nodejs
+RUN adduser --system --uid 1001 nextjs
+
+# Dosya sahipliğini değiştir
+RUN chown -R nextjs:nodejs /app
+USER nextjs
+
+# Çalıştır
+EXPOSE 3000
+ENV NODE_ENV=production
+CMD ["npm", "run", "start"]

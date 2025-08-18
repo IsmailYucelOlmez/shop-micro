@@ -1,0 +1,28 @@
+version: "3.9"
+services:
+  home:
+    build:
+      context: .
+      dockerfile: home/dockerfile
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+    networks:
+      - shop-network
+  card:
+    build:
+      context: .
+      dockerfile: card/dockerfile
+    ports:
+      - "3001:3000"
+    environment:
+      - NODE_ENV=production
+    networks:
+      - shop-network
+    depends_on:
+      - home
+
+networks:
+  shop-network:
+    driver: bridge
