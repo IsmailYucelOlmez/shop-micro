@@ -1,18 +1,40 @@
 {
-  "name": "shared",
+  "name": "@shop-micro/shared",
   "version": "1.0.0",
-  "description": "",
-  "main": "src/index.ts",
+  "description": "Shared components and utilities for shop micro-frontend",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.js"
+    },
+    "./components/*": {
+      "types": "./dist/components/*.d.ts",
+      "import": "./dist/components/*.js",
+      "require": "./dist/components/*.js"
+    },
+    "./lib/*": {
+      "types": "./dist/lib/*.d.ts",
+      "import": "./dist/lib/*.js",
+      "require": "./dist/lib/*.js"
+    }
+  },
   "scripts": {
     "build": "tsc",
+    "dev": "tsc --watch",
+    "clean": "rm -rf dist",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "keywords": [],
+  "keywords": ["shared", "components", "utilities"],
   "author": "",
   "license": "ISC",
   "type": "module",
   "dependencies": {
     "@radix-ui/react-slot": "^1.0.2",
+    "@types/amqplib": "^0.10.7",
+    "amqplib": "^0.10.8",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "lucide-react": "^0.539.0",
@@ -28,5 +50,9 @@
     "tailwindcss": "^4.1.12",
     "tailwindcss-animate": "^1.0.7",
     "typescript": "^5.9.2"
+  },
+  "peerDependencies": {
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
   }
 }

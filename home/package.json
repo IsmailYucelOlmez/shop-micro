@@ -1,19 +1,23 @@
 {
-  "name": "home",
+  "name": "@shop-micro/home",
   "version": "0.1.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "clean": "rm -rf .next"
   },
   "dependencies": {
+    "@reduxjs/toolkit": "^2.8.2",
+    "@shop-micro/shared": "workspace:*",
+    "@tanstack/react-query": "^5.51.1",
+    "lucide-react": "^0.540.0",
     "next": "15.4.6",
     "react": "19.1.0",
     "react-dom": "19.1.0",
-    "@tanstack/react-query": "^5.51.1",
-    "shared": "file:../shared"
+    "react-redux": "^9.2.0"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",

@@ -1,9 +1,21 @@
 {
-    "private": true,
-    "workspaces": [
-      "home",
-      "cart",
-      "shared"
-    ]
+  "name": "shop-micro",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Micro-frontend shop application",
+  "scripts": {
+    "dev": "pnpm --parallel dev",
+    "build": "pnpm --recursive build",
+    "start": "pnpm --parallel start",
+    "lint": "pnpm --recursive lint",
+    "clean": "pnpm --recursive clean"
+  },
+  "devDependencies": {
+    "typescript": "^5.9.2"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "pnpm": ">=8.0.0"
+  }
 }
   

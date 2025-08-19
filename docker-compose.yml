@@ -1,27 +1,49 @@
-version: "3.9"
 services:
+  rabbitmq:
+    image: rabbitmq:3-management
+    ports:
+      - "${RABBITMQ_PORT}:5672"
+      - "${RABBITMQ_MANAGEMENT_PORT}:15672"
+    environment:
+      - RABBITMQ_DEFAULT_USER=${RABBITMQ_USER}
+      - RABBITMQ_DEFAULT_PASS=${RABBITMQ_PASS}
+    networks:
+      - shop-network
+    healthcheck:
+      test: ["CMD", "rabbitmq-diagnostics", "ping"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
   home:
     build:
       context: .
       dockerfile: home/dockerfile
     ports:
-      - "3000:3000"
+      - "${HOME_PORT}:3000"
     environment:
-      - NODE_ENV=production
+      - NODE_ENV=${NODE_ENV}
+      - RABBITMQ_URL=${RABBITMQ_URL}
     networks:
       - shop-network
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+
   card:
     build:
       context: .
       dockerfile: card/dockerfile
     ports:
-      - "3001:3000"
+      - "${CARD_PORT}:3000"
     environment:
-      - NODE_ENV=production
+      - NODE_ENV=${NODE_ENV}
+      - RABBITMQ_URL=${RABBITMQ_URL}
     networks:
       - shop-network
     depends_on:
-      - home
+      rabbitmq:
+        condition: service_healthy
 
 networks:
   shop-network:

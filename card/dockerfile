@@ -1,51 +1,66 @@
 # Build stage
 FROM node:20-alpine AS builder
-
-# Çalışma dizini
 WORKDIR /app
 
-# Shared paketini kopyala ve build et
+# Install pnpm
+RUN npm install -g pnpm
+
+# Copy workspace configuration
+COPY pnpm-workspace.yaml ./
+COPY pnpm-lock.yaml* ./
+COPY package.json ./
+
+# Copy all packages
 COPY shared ./shared
+COPY card ./card
+
+# Install dependencies (allow lockfile generation inside container)
+RUN pnpm install --no-frozen-lockfile
+
+# Build shared package
 WORKDIR /app/shared
-RUN npm install
-RUN npm run build
+RUN pnpm build
 
-# Ana uygulamaya geç
+# Build card package
 WORKDIR /app/card
-COPY card/package*.json ./
-RUN npm install
-
-# Kodları kopyala
-COPY card/ ./
-
-# Build al
-RUN npm run build
+RUN pnpm build
 
 # Production stage
 FROM node:20-alpine AS runner
-
 WORKDIR /app
 
-# Production dependencies
-COPY card/package*.json ./
-RUN npm ci --only=production && npm cache clean --force
+# Install pnpm
+RUN npm install -g pnpm
 
-# Shared paketini kopyala
-COPY --from=builder /app/shared ./shared
+# Create user for security first
+RUN addgroup --system --gid 1001 nodejs && \
+    adduser --system --uid 1001 nextjs
 
-# Build edilmiş uygulamayı kopyala
-COPY --from=builder /app/card/.next ./.next
-COPY --from=builder /app/card/public ./public
+# Copy workspace configuration
+COPY pnpm-workspace.yaml ./
+COPY pnpm-lock.yaml* ./
+COPY package.json ./
 
-# User oluştur
-RUN addgroup --system --gid 1001 nodejs
-RUN adduser --system --uid 1001 nextjs
+# Copy shared package
+COPY shared ./shared
+COPY card ./card
 
-# Dosya sahipliğini değiştir
+# Copy prebuilt artifacts from builder
+COPY --from=builder /app/shared/dist ./shared/dist
+COPY --from=builder /app/card/.next ./card/.next
+
+# Change ownership to nextjs user
 RUN chown -R nextjs:nodejs /app
+
+# Switch to nextjs user for dependency installation
 USER nextjs
 
-# Çalıştır
+# Install only production dependencies
+RUN pnpm install --no-frozen-lockfile --prod
+
+# Set working directory to card
+WORKDIR /app/card
+
 EXPOSE 3000
 ENV NODE_ENV=production
-CMD ["npm", "run", "start"]
+CMD ["pnpm", "start"]

@@ -1,0 +1,4 @@
+packages:
+  - 'home'
+  - 'card'
+  - 'shared'

@@ -1,12 +1,25 @@
 "use client";
 import Image from "next/image";
 import Link from "next/link";
-import { Card, CardContent, CardFooter, CardHeader, CardTitle, Button } from "shared";
+import { Card, CardContent, CardFooter, CardHeader, CardTitle, Button } from "@shop-micro/shared";
 import { useProducts } from "../hooks/useProducts";
+import { useDispatch } from "react-redux";
+import { addToCart } from "../store/cartSlice";
+import { AppDispatch } from "../store";
 
 export default function Home() {
   const { data: products = [], isLoading, isError } = useProducts();
   const featured = products.slice(0, 4);
+  const dispatch = useDispatch<AppDispatch>();
+
+  const handleAddToCart = (product: Product) => {
+    dispatch(addToCart({
+      id: product.id,
+      title: product.title,
+      price: product.price,
+      image: product.image,
+    }));
+  };
 
   return (
     <div className="font-sans min-h-screen">
@@ -20,18 +33,27 @@ export default function Home() {
         {!isLoading && !isError && (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {featured.map((product) => (
-              <Card key={product.id} className="flex flex-col">
-                <CardHeader>
-                  <CardTitle className="line-clamp-2 min-h-[3.5rem]">{product.title}</CardTitle>
-                </CardHeader>
-                <CardContent className="flex-1">
-                  <div className="relative w-full h-48">
-                    <Image src={product.image} alt={product.title} fill className="object-contain" />
-                  </div>
-                  <p className="mt-4 text-lg font-medium">${product.price.toFixed(2)}</p>
-                </CardContent>
+              <Card key={product.id} className="flex flex-col hover:shadow-lg transition-shadow">
+                <Link href={`/products/${product.id}`}>
+                  <CardHeader className="cursor-pointer">
+                    <CardTitle className="line-clamp-2 min-h-[3.5rem] hover:text-blue-600 transition-colors">
+                      {product.title}
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent className="flex-1">
+                    <div className="relative w-full h-48">
+                      <Image src={product.image} alt={product.title} fill className="object-contain" />
+                    </div>
+                    <p className="mt-4 text-lg font-medium">${product.price.toFixed(2)}</p>
+                  </CardContent>
+                </Link>
                 <CardFooter className="gap-2">
-                  <Button className="w-full">Add to Cart</Button>
+                  <Button 
+                    className="w-full" 
+                    onClick={() => handleAddToCart(product)}
+                  >
+                    Add to Cart
+                  </Button>
                 </CardFooter>
               </Card>
             ))}

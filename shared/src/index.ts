@@ -1,3 +1,5 @@
 export { Button } from './components/ui/button'
 export { cn } from './lib/utils'
 export { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from './components/ui/card'
+export { cartStateManager, cartEventBus, cartStorage, type CartItem, type CartState } from './lib/cartState'
+export { rabbitMQCartManager, type CartEvent } from './lib/rabbitMQCartState'
