@@ -1,15 +1,18 @@
 "use client";
 import Image from "next/image";
 import Link from "next/link";
+import { useState } from "react";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle, Button } from "@shop-micro/shared";
 import { useProducts } from "../../hooks/useProducts";
 import { useDispatch } from "react-redux";
-import { addToCart } from "../../store/cartSlice";
+import { addToCart, syncServerCart } from "../../store/cartSlice";
 import { AppDispatch } from "../../store";
+import Toast from "../../components/Toast";
 
 export default function ProductsPage() {
   const { data: products = [], isLoading, isError } = useProducts();
   const dispatch = useDispatch<AppDispatch>();
+  const [showToast, setShowToast] = useState(false);
 
   const handleAddToCart = (product: Product) => {
     dispatch(addToCart({
@@ -18,10 +21,19 @@ export default function ProductsPage() {
       price: product.price,
       image: product.image,
     }));
+    // Sync to Supabase immediately after adding to cart
+    dispatch(syncServerCart());
+    // Show success toast
+    setShowToast(true);
   };
 
   return (
     <div className="container mx-auto py-10">
+      <Toast 
+        message="Product added to cart successfully!" 
+        isVisible={showToast} 
+        onClose={() => setShowToast(false)} 
+      />
       <h1 className="text-2xl font-semibold mb-8">Products</h1>
       {isLoading && <p>Loading...</p>}
       {isError && <p>Failed to load products.</p>}

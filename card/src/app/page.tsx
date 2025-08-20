@@ -1,8 +1,9 @@
 "use client";
 import Image from "next/image";
 import { useSelector, useDispatch } from "react-redux";
+import { useEffect } from "react";
 import { RootState, AppDispatch } from "../store";
-import { removeFromCart, updateQuantity, clearCart } from "../store/cartSlice";
+import { removeFromCart, updateQuantity, clearCart, syncServerCart, clearServerCart, loadServerCart, removeServerCartItem } from "../store/cartSlice";
 import { Trash2, Minus, Plus, ShoppingCart } from "lucide-react";
 
 export default function CartPage() {
@@ -10,16 +11,24 @@ export default function CartPage() {
   const total = useSelector((state: RootState) => state.cart.total);
   const dispatch = useDispatch<AppDispatch>();
 
+  // Load cart data from Supabase when page loads
+  useEffect(() => {
+    dispatch(loadServerCart());
+  }, [dispatch]);
+
   const handleUpdateQuantity = (id: number, quantity: number) => {
     dispatch(updateQuantity({ id, quantity }));
+    dispatch(syncServerCart());
   };
 
   const handleRemoveItem = (id: number) => {
     dispatch(removeFromCart(id));
+    dispatch(removeServerCartItem(id));
   };
 
   const handleClearCart = () => {
     dispatch(clearCart());
+    dispatch(clearServerCart());
   };
 
   return (
@@ -57,7 +66,7 @@ export default function CartPage() {
             <h2 className="text-2xl font-semibold text-gray-600 mb-2">Your cart is empty</h2>
             <p className="text-gray-500 mb-6">Add some items to get started!</p>
             <a
-              href="http://localhost:3000"
+              href="http://localhost:3002"
               target="_blank"
               rel="noopener noreferrer"
               className="inline-block bg-blue-600 text-white py-3 px-6 rounded-lg hover:bg-blue-700 transition-colors font-medium"
@@ -123,7 +132,7 @@ export default function CartPage() {
 
               {/* Order Summary */}
               <div className="lg:col-span-1">
-                <div className="bg-white p-6 rounded-lg shadow-sm border sticky top-4">
+                <div className="bg-white text-black p-6 rounded-lg shadow-sm border sticky top-4">
                   <h2 className="text-xl font-semibold mb-4">Order Summary</h2>
                   
                   <div className="space-y-2 mb-4">

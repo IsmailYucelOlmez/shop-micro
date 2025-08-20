@@ -24,6 +24,8 @@ services:
     environment:
       - NODE_ENV=${NODE_ENV}
       - RABBITMQ_URL=${RABBITMQ_URL}
+      - NEXT_PUBLIC_SUPABASE_URL=${NEXT_PUBLIC_SUPABASE_URL}
+      - NEXT_PUBLIC_SUPABASE_ANON_KEY=${NEXT_PUBLIC_SUPABASE_ANON_KEY}
     networks:
       - shop-network
     depends_on:
@@ -39,6 +41,8 @@ services:
     environment:
       - NODE_ENV=${NODE_ENV}
       - RABBITMQ_URL=${RABBITMQ_URL}
+      - NEXT_PUBLIC_SUPABASE_URL=${NEXT_PUBLIC_SUPABASE_URL}
+      - NEXT_PUBLIC_SUPABASE_ANON_KEY=${NEXT_PUBLIC_SUPABASE_ANON_KEY}
     networks:
       - shop-network
     depends_on:

@@ -4,7 +4,7 @@ import Image from "next/image";
 import { Button } from "@shop-micro/shared";
 import { useProduct } from "@/hooks/useProducts";
 import { useDispatch } from "react-redux";
-import { addToCart } from "../../../store/cartSlice";
+import { addToCart, syncServerCart } from "../../../store/cartSlice";
 import { AppDispatch } from "../../../store";
 
 export default function ProductDetailPage() {
@@ -21,6 +21,7 @@ export default function ProductDetailPage() {
         price: product.price,
         image: product.image,
       }));
+      dispatch(syncServerCart());
     }
   };
 

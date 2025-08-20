@@ -2,23 +2,24 @@
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { AppDispatch } from '../../store';
-import { syncCart } from '../../store/cartSlice';
+import { syncCart, syncServerCart, loadServerCart } from '../../store/cartSlice';
 import { rabbitMQCartManager } from '@shop-micro/shared';
 
 export default function CartSyncProvider({ children }: { children: React.ReactNode }) {
   const dispatch = useDispatch<AppDispatch>();
 
   useEffect(() => {
-    // Listen for cart updates from other applications via RabbitMQ
     const handleCartUpdate = () => {
       dispatch(syncCart());
+      dispatch(syncServerCart());
     };
 
     rabbitMQCartManager.subscribe('cart-updated', handleCartUpdate);
     rabbitMQCartManager.subscribe('cart-cleared', handleCartUpdate);
 
-    // Initial sync
+    // Initial sync - only sync to server, don't load from server
     dispatch(syncCart());
+    dispatch(syncServerCart());
 
     return () => {
       rabbitMQCartManager.unsubscribe('cart-updated', handleCartUpdate);
@@ -28,3 +29,5 @@ export default function CartSyncProvider({ children }: { children: React.ReactNo
 
   return <>{children}</>;
 }
+
+ 

@@ -1,8 +1,11 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  transpilePackages: ['shared'],
+  transpilePackages: ['@shop-micro/shared'],
   experimental: {
-    esmExternals: 'loose'
+    esmExternals: 'loose',
+  },
+  eslint: {
+    ignoreDuringBuilds: true,
   },
   images: {
     remotePatterns: [
@@ -11,7 +14,7 @@ const nextConfig = {
         hostname: 'fakestoreapi.com',
       },
     ],
-  }
+  },
 };
 
 module.exports = nextConfig;

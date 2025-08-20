@@ -1,16 +1,19 @@
 "use client";
 import Image from "next/image";
 import Link from "next/link";
+import { useState } from "react";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle, Button } from "@shop-micro/shared";
 import { useProducts } from "../hooks/useProducts";
 import { useDispatch } from "react-redux";
-import { addToCart } from "../store/cartSlice";
+import { addToCart, syncServerCart } from "../store/cartSlice";
 import { AppDispatch } from "../store";
+import Toast from "../components/Toast";
 
 export default function Home() {
   const { data: products = [], isLoading, isError } = useProducts();
   const featured = products.slice(0, 4);
   const dispatch = useDispatch<AppDispatch>();
+  const [showToast, setShowToast] = useState(false);
 
   const handleAddToCart = (product: Product) => {
     dispatch(addToCart({
@@ -19,10 +22,19 @@ export default function Home() {
       price: product.price,
       image: product.image,
     }));
+    // Sync to Supabase immediately after adding to cart
+    dispatch(syncServerCart());
+    // Show success toast
+    setShowToast(true);
   };
 
   return (
     <div className="font-sans min-h-screen">
+      <Toast 
+        message="Product added to cart successfully!" 
+        isVisible={showToast} 
+        onClose={() => setShowToast(false)} 
+      />
       <main className="container mx-auto py-10">
         <div className="mb-8 flex items-center justify-between">
           <h1 className="text-2xl font-semibold">Featured Products</h1>

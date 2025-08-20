@@ -32,6 +32,7 @@
   "license": "ISC",
   "type": "module",
   "dependencies": {
+    "@supabase/supabase-js": "^2.45.4",
     "@radix-ui/react-slot": "^1.0.2",
     "@types/amqplib": "^0.10.7",
     "amqplib": "^0.10.8",
