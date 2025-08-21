@@ -1,0 +1,20 @@
+{
+  "cart": {
+    "title": "Sepet Uygulaması",
+    "backToShop": "Mağazaya Dön",
+    "clearCart": "Sepeti Temizle",
+    "emptyCart": {
+      "title": "Sepetiniz boş",
+      "description": "Başlamak için bazı ürünler ekleyin!",
+      "continueShopping": "Alışverişe Devam Et"
+    },
+    "orderSummary": {
+      "title": "Sipariş Özeti",
+      "subtotal": "Ara Toplam ({count} ürün)",
+      "shipping": "Kargo",
+      "free": "Ücretsiz",
+      "total": "Toplam",
+      "proceedToCheckout": "Ödemeye Geç"
+    }
+  }
+}

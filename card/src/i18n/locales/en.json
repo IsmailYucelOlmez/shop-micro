@@ -1,0 +1,20 @@
+{
+  "cart": {
+    "title": "Cart Application",
+    "backToShop": "Back to Shop",
+    "clearCart": "Clear Cart",
+    "emptyCart": {
+      "title": "Your cart is empty",
+      "description": "Add some items to get started!",
+      "continueShopping": "Continue Shopping"
+    },
+    "orderSummary": {
+      "title": "Order Summary",
+      "subtotal": "Subtotal ({count} items)",
+      "shipping": "Shipping",
+      "free": "Free",
+      "total": "Total",
+      "proceedToCheckout": "Proceed to Checkout"
+    }
+  }
+}
