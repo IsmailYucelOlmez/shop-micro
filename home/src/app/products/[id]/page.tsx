@@ -6,8 +6,10 @@ import { useProduct } from "@/hooks/useProducts";
 import { useDispatch } from "react-redux";
 import { addToCart, syncServerCart } from "../../../store/cartSlice";
 import { AppDispatch } from "../../../store";
+import { useTranslations } from 'next-intl';
 
 export default function ProductDetailPage() {
+  const t = useTranslations('products');
   const params = useParams();
   const productId = Number(params.id);
   const { data: product, isLoading, isError } = useProduct(productId);
@@ -29,7 +31,7 @@ export default function ProductDetailPage() {
     return (
       <div className="container mx-auto py-10">
         <div className="flex justify-center items-center min-h-[400px]">
-          <p className="text-lg">Loading product...</p>
+          <p className="text-lg">{t('loading')}</p>
         </div>
       </div>
     );
@@ -39,7 +41,7 @@ export default function ProductDetailPage() {
     return (
       <div className="container mx-auto py-10">
         <div className="flex justify-center items-center min-h-[400px]">
-          <p className="text-lg text-red-600">Failed to load product.</p>
+          <p className="text-lg text-red-600">{t('error')}</p>
         </div>
       </div>
     );
@@ -81,7 +83,7 @@ export default function ProductDetailPage() {
 
             <div>
               <h3 className="text-lg font-semibold text-gray-900 mb-2">
-                Description
+                {t('description')}
               </h3>
               <p className="text-gray-600 leading-relaxed">
                 {product.description}
@@ -94,7 +96,7 @@ export default function ProductDetailPage() {
                 className="w-full lg:w-auto px-8 py-3 text-lg"
                 size="lg"
               >
-                Add to Cart
+                {t('addToCart')}
               </Button>
             </div>
           </div>

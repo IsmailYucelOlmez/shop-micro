@@ -8,8 +8,10 @@ import { useDispatch } from "react-redux";
 import { addToCart, syncServerCart } from "../../store/cartSlice";
 import { AppDispatch } from "../../store";
 import Toast from "../../components/Toast";
+import { useTranslations } from 'next-intl';
 
 export default function ProductsPage() {
+  const t = useTranslations('products');
   const { data: products = [], isLoading, isError } = useProducts();
   const dispatch = useDispatch<AppDispatch>();
   const [showToast, setShowToast] = useState(false);
@@ -30,13 +32,13 @@ export default function ProductsPage() {
   return (
     <div className="container mx-auto py-10">
       <Toast 
-        message="Product added to cart successfully!" 
+        message={t('toast.success')} 
         isVisible={showToast} 
         onClose={() => setShowToast(false)} 
       />
-      <h1 className="text-2xl font-semibold mb-8">Products</h1>
-      {isLoading && <p>Loading...</p>}
-      {isError && <p>Failed to load products.</p>}
+      <h1 className="text-2xl font-semibold mb-8">{t('title')}</h1>
+      {isLoading && <p>{t('loading')}</p>}
+      {isError && <p>{t('error')}</p>}
       {!isLoading && !isError && (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
           {products.map((product) => (
@@ -59,7 +61,7 @@ export default function ProductsPage() {
                   className="w-full" 
                   onClick={() => handleAddToCart(product)}
                 >
-                  Add to Cart
+                  {t('addToCart')}
                 </Button>
               </CardFooter>
             </Card>

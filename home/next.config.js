@@ -1,9 +1,8 @@
+const withNextIntl = require('next-intl/plugin')();
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   transpilePackages: ['@shop-micro/shared'],
-  experimental: {
-    esmExternals: 'loose',
-  },
   eslint: {
     ignoreDuringBuilds: true,
   },
@@ -17,4 +16,4 @@ const nextConfig = {
   },
 };
 
-module.exports = nextConfig;
+module.exports = withNextIntl(nextConfig);

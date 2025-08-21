@@ -1,0 +1,26 @@
+{
+  "home": {
+    "title": "Öne Çıkan Ürünler",
+    "viewAll": "Tümünü gör",
+    "loading": "Yükleniyor...",
+    "error": "Ürünler yüklenemedi.",
+    "addToCart": "Sepete Ekle",
+    "toast": {
+      "success": "Ürün başarıyla sepete eklendi!"
+    }
+  },
+  "navigation": {
+    "home": "Ana Sayfa",
+    "products": "Ürünler",
+    "cart": "Sepet"
+  },
+  "products": {
+    "title": "Tüm Ürünler",
+    "loading": "Ürünler yükleniyor...",
+    "error": "Ürünler yüklenemedi.",
+    "addToCart": "Sepete Ekle",
+    "price": "Fiyat",
+    "description": "Açıklama",
+    "backToProducts": "Ürünlere Dön"
+  }
+}

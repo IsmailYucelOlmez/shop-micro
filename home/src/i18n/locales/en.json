@@ -1,0 +1,26 @@
+{
+  "home": {
+    "title": "Featured Products",
+    "viewAll": "View all",
+    "loading": "Loading...",
+    "error": "Failed to load products.",
+    "addToCart": "Add to Cart",
+    "toast": {
+      "success": "Product added to cart successfully!"
+    }
+  },
+  "navigation": {
+    "home": "Home",
+    "products": "Products",
+    "cart": "Cart"
+  },
+  "products": {
+    "title": "All Products",
+    "loading": "Loading products...",
+    "error": "Failed to load products.",
+    "addToCart": "Add to Cart",
+    "price": "Price",
+    "description": "Description",
+    "backToProducts": "Back to Products"
+  }
+}

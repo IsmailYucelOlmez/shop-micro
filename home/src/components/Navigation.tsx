@@ -3,8 +3,11 @@ import Link from "next/link";
 import { useSelector } from "react-redux";
 import { RootState } from "../store";
 import { ShoppingCart } from "lucide-react";
+import { useTranslations } from 'next-intl';
+import LanguageSwitcher from './LanguageSwitcher';
 
 export default function Navigation() {
+  const t = useTranslations('navigation');
   const cartItems = useSelector((state: RootState) => state.cart.items);
   const itemCount = cartItems.reduce((total, item) => total + item.quantity, 0);
 
@@ -17,11 +20,12 @@ export default function Navigation() {
           </Link>
           
           <div className="flex items-center space-x-6">
+            <LanguageSwitcher />
             <Link 
               href="/products" 
               className="text-gray-600 hover:text-gray-900 transition-colors"
             >
-              Products
+              {t('products')}
             </Link>
             
                          <a 

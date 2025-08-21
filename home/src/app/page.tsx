@@ -8,8 +8,10 @@ import { useDispatch } from "react-redux";
 import { addToCart, syncServerCart } from "../store/cartSlice";
 import { AppDispatch } from "../store";
 import Toast from "../components/Toast";
+import { useTranslations } from 'next-intl';
 
 export default function Home() {
+  const t = useTranslations('home');
   const { data: products = [], isLoading, isError } = useProducts();
   const featured = products.slice(0, 4);
   const dispatch = useDispatch<AppDispatch>();
@@ -31,17 +33,17 @@ export default function Home() {
   return (
     <div className="font-sans min-h-screen">
       <Toast 
-        message="Product added to cart successfully!" 
+        message={t('toast.success')} 
         isVisible={showToast} 
         onClose={() => setShowToast(false)} 
       />
       <main className="container mx-auto py-10">
         <div className="mb-8 flex items-center justify-between">
-          <h1 className="text-2xl font-semibold">Featured Products</h1>
-          <Link href="/products" className="text-sm underline">View all</Link>
+          <h1 className="text-2xl font-semibold">{t('title')}</h1>
+          <Link href="/products" className="text-sm underline">{t('viewAll')}</Link>
         </div>
-        {isLoading && <p>Loading...</p>}
-        {isError && <p>Failed to load products.</p>}
+        {isLoading && <p>{t('loading')}</p>}
+        {isError && <p>{t('error')}</p>}
         {!isLoading && !isError && (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {featured.map((product) => (
@@ -64,7 +66,7 @@ export default function Home() {
                     className="w-full" 
                     onClick={() => handleAddToCart(product)}
                   >
-                    Add to Cart
+                    {t('addToCart')}
                   </Button>
                 </CardFooter>
               </Card>
